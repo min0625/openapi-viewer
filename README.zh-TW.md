@@ -3,7 +3,7 @@
 一個簡潔優雅的 OpenAPI/Swagger 文件檢視器,透過 GitHub Pages 託管,支援動態載入任何公開的 API 規格文件。
 
 [![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://min0625.github.io/openapi-viewer/)
-[![Swagger UI](https://img.shields.io/badge/Swagger%20UI-5.10.0-green)](https://github.com/swagger-api/swagger-ui)
+[![Swagger UI](https://img.shields.io/badge/Swagger%20UI-5.30.2-green)](https://github.com/swagger-api/swagger-ui)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 繁體中文 | [English](./README.md)
@@ -22,44 +22,44 @@
 
 ### 方式 1: 載入外部 API 文件
 
-在 URL 後加上 `?uri=` 參數,指向你的 OpenAPI/Swagger JSON 檔案:
+在 URL 後加上 `?url=` 參數，指向你的 OpenAPI/Swagger JSON 檔案：
 
 ```
-https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://petstore3.swagger.io/api/v3/openapi.json
 ```
 
 ### 方式 2: 載入 GitHub 上的檔案
 
-使用 GitHub Raw URL:
+使用 GitHub Raw URL：
 
 ```
-https://min0625.github.io/openapi-viewer?uri=https://raw.githubusercontent.com/min0625/openapi-viewer/refs/heads/main/swagger.json
+https://min0625.github.io/openapi-viewer?url=https://raw.githubusercontent.com/min0625/openapi-viewer/main/swagger.json
 ```
 
-### 方式 3: 不提供 URI 參數
+### 方式 3: 不提供 URL 參數
 
-如果直接訪問而不帶 `uri` 參數,會顯示使用說明引導頁面。
+如果直接訪問而不帶 `url` 參數，會載入預設的範例 API 文件。
 
 ## 📚 使用範例
 
 ### Swagger 2.0 範例
 ```
-https://min0625.github.io/openapi-viewer?uri=https://petstore.swagger.io/v2/swagger.json
+https://min0625.github.io/openapi-viewer?url=https://petstore.swagger.io/v2/swagger.json
 ```
 
 ### OpenAPI 3.0 範例
 ```
-https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://petstore3.swagger.io/api/v3/openapi.json
 ```
 
 ### 載入私有 Gist
 ```
-https://min0625.github.io/openapi-viewer?uri=https://gist.githubusercontent.com/username/gist-id/raw/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://gist.githubusercontent.com/username/gist-id/raw/openapi.json
 ```
 
 ## 🛠️ 技術規格
 
-- **Swagger UI**: v5.10.0
+- **Swagger UI**: v5.30.2
 - **支援格式**:
   - Swagger 2.0 (JSON/YAML)
   - OpenAPI 3.0.x (JSON/YAML)
@@ -98,14 +98,29 @@ npx serve .
 ## ⚠️ 注意事項
 
 ### CORS 限制
-載入的 API 文件必須允許跨域請求 (CORS)。如果遇到 CORS 錯誤:
 
-1. 確保目標伺服器設定了正確的 CORS headers
-2. 使用 GitHub Raw URL 或 GitHub Gist
-3. 使用支援 CORS 的 CDN 服務
+載入的 API 文件必須允許跨域請求 (CORS)。如果遇到 CORS 錯誤，請考慮以下解決方案：
+
+#### � 推薦解決方案
+
+1. **使用 GitHub Raw URL**: 推薦的方式，沒有 CORS 限制
+   ```
+   https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path-to-file>
+   ```
+
+2. **使用 GitHub Gist**: 適合分享範例文件
+   ```
+   https://gist.githubusercontent.com/<user>/<gist-id>/raw/<file>
+   ```
+
+3. **配置伺服器 CORS**: 如果你控制 API 伺服器，添加以下 headers:
+   ```
+   Access-Control-Allow-Origin: *
+   Access-Control-Allow-Methods: GET, OPTIONS
+   ```
 
 ### GitHub Raw URL 格式
-使用 GitHub 檔案時,使用以下格式:
+使用 GitHub 檔案時，使用以下格式：
 ```
 https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path-to-file>
 ```
