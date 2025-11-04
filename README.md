@@ -33,7 +33,7 @@ https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3
 Use GitHub Raw URL:
 
 ```
-https://min0625.github.io/openapi-viewer?uri=https://raw.githubusercontent.com/username/repo/main/openapi.json
+https://min0625.github.io/openapi-viewer?uri=https://raw.githubusercontent.com/min0625/openapi-viewer/refs/heads/main/swagger.json
 ```
 
 ### Method 3: No URI Parameter
@@ -60,7 +60,7 @@ https://min0625.github.io/openapi-viewer?uri=https://gist.githubusercontent.com/
 ## 🛠️ Technical Specifications
 
 - **Swagger UI**: v5.10.0
-- **Supported Formats**: 
+- **Supported Formats**:
   - Swagger 2.0 (JSON/YAML)
   - OpenAPI 3.0.x (JSON/YAML)
   - OpenAPI 3.1.x (JSON/YAML)

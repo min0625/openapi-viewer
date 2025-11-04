@@ -33,7 +33,7 @@ https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3
 使用 GitHub Raw URL:
 
 ```
-https://min0625.github.io/openapi-viewer?uri=https://raw.githubusercontent.com/username/repo/main/openapi.json
+https://min0625.github.io/openapi-viewer?uri=https://raw.githubusercontent.com/min0625/openapi-viewer/refs/heads/main/swagger.json
 ```
 
 ### 方式 3: 不提供 URI 參數
@@ -60,7 +60,7 @@ https://min0625.github.io/openapi-viewer?uri=https://gist.githubusercontent.com/
 ## 🛠️ 技術規格
 
 - **Swagger UI**: v5.10.0
-- **支援格式**: 
+- **支援格式**:
   - Swagger 2.0 (JSON/YAML)
   - OpenAPI 3.0.x (JSON/YAML)
   - OpenAPI 3.1.x (JSON/YAML)
