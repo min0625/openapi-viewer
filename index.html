@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation</title>
+    <title>OpenAPI Viewer</title>
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui.css">
     <style>
         html {
@@ -46,19 +46,43 @@
             font-family: sans-serif;
             font-size: 14px;
         }
+
+        #placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            padding: 40px;
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        #placeholder h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #placeholder code {
+            background-color: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 3px;
+            color: #d63384;
+        }
     </style>
 </head>
 <body>
     <div id="info-banner">
-        🔍 支援 Swagger 2.0 & OpenAPI 3.x 規格 | 使用方式: ?uri=你的swagger.json網址
+        🔍 Supports Swagger 2.0 & OpenAPI 3.x | Usage: ?uri=your-openapi-url
     </div>
     <div id="error-message"></div>
+    <div id="placeholder"></div>
     <div id="swagger-ui"></div>
 
     <script src="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui-bundle.js"></script>
     <script src="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui-standalone-preset.js"></script>
     <script>
-        // 顯示錯誤訊息
+        // Display error message
         function showError(message) {
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
@@ -69,16 +93,27 @@
         }
 
         window.onload = function() {
-            // 從 URL 參數取得 swagger.json 的位置
+            // Get swagger.json location from URL parameter
             const urlParams = new URLSearchParams(window.location.search);
             const swaggerUri = urlParams.get('uri');
 
-            // 如果沒有提供 uri 參數,使用預設的本地檔案
-            const swaggerUrl = swaggerUri || "./swagger.json";
+            // If no uri parameter provided, show helpful message
+            if (!swaggerUri) {
+                const placeholder = document.getElementById('placeholder');
+                placeholder.innerHTML = `
+                    <h2>⚠️ Please provide an API documentation URL</h2>
+                    <p>Usage:</p>
+                    <p><code>?uri=https://example.com/openapi.json</code></p>
+                    <br>
+                    <p>Example:</p>
+                    <p><code>?uri=https://petstore3.swagger.io/api/v3/openapi.json</code></p>
+                `;
+                return;
+            }
 
             try {
                 const ui = SwaggerUIBundle({
-                    url: swaggerUrl,
+                    url: swaggerUri,
                     dom_id: '#swagger-ui',
                     deepLinking: true,
                     presets: [
@@ -89,10 +124,10 @@
                         SwaggerUIBundle.plugins.DownloadUrl
                     ],
                     layout: "StandaloneLayout",
-                    // 支援 Swagger 2.0 和 OpenAPI 3.x
-                    validatorUrl: null, // 停用線上驗證器以支援 private 文件
+                    // Support both Swagger 2.0 and OpenAPI 3.x
+                    validatorUrl: null, // Disable online validator to support private docs
                     onComplete: function() {
-                        // 檢測規格版本
+                        // Detect specification version
                         const spec = ui.getState().toJS().spec.json;
                         let version = 'Unknown';
 
@@ -102,20 +137,20 @@
                             version = `OpenAPI ${spec.openapi}`;
                         }
 
-                        console.log(`✅ 成功載入 ${version} 規格`);
+                        console.log(`✅ Successfully loaded ${version} specification`);
                         document.getElementById('info-banner').innerHTML =
-                            `🔍 支援 Swagger 2.0 & OpenAPI 3.x 規格 | 當前版本: <strong>${version}</strong>`;
+                            `🔍 Supports Swagger 2.0 & OpenAPI 3.x | Current version: <strong>${version}</strong>`;
                     },
                     onFailure: function(error) {
-                        console.error('載入失敗:', error);
-                        showError('❌ 載入 API 文件失敗: ' + error.message);
+                        console.error('Loading failed:', error);
+                        showError('❌ Failed to load API documentation: ' + error.message);
                     }
                 });
 
                 window.ui = ui;
             } catch (error) {
-                console.error('初始化失敗:', error);
-                showError('❌ 初始化 Swagger UI 失敗: ' + error.message);
+                console.error('Initialization failed:', error);
+                showError('❌ Failed to initialize Swagger UI: ' + error.message);
             }
         };
     </script>
