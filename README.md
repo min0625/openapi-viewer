@@ -3,7 +3,7 @@
 A simple and elegant OpenAPI/Swagger documentation viewer hosted on GitHub Pages. Supports dynamic loading of any public API specification files.
 
 [![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://min0625.github.io/openapi-viewer/)
-[![Swagger UI](https://img.shields.io/badge/Swagger%20UI-5.10.0-green)](https://github.com/swagger-api/swagger-ui)
+[![Swagger UI](https://img.shields.io/badge/Swagger%20UI-5.30.2-green)](https://github.com/swagger-api/swagger-ui)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [繁體中文](./README.zh-TW.md) | English
@@ -22,10 +22,10 @@ A simple and elegant OpenAPI/Swagger documentation viewer hosted on GitHub Pages
 
 ### Method 1: Load External API Documentation
 
-Add the `?uri=` parameter to the URL, pointing to your OpenAPI/Swagger JSON file:
+Add the `?url=` parameter to the URL, pointing to your OpenAPI/Swagger JSON file:
 
 ```
-https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://petstore3.swagger.io/api/v3/openapi.json
 ```
 
 ### Method 2: Load Files from GitHub
@@ -33,34 +33,34 @@ https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3
 Use GitHub Raw URL:
 
 ```
-https://min0625.github.io/openapi-viewer?uri=https://raw.githubusercontent.com/username/repo/main/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://raw.githubusercontent.com/min0625/openapi-viewer/main/swagger.json
 ```
 
-### Method 3: No URI Parameter
+### Method 3: No URL Parameter
 
-If you visit without the `uri` parameter, you'll see a helpful guide on how to use the viewer.
+If you visit without the `url` parameter, the default example API documentation will be loaded.
 
 ## 📚 Usage Examples
 
 ### Swagger 2.0 Example
 ```
-https://min0625.github.io/openapi-viewer?uri=https://petstore.swagger.io/v2/swagger.json
+https://min0625.github.io/openapi-viewer?url=https://petstore.swagger.io/v2/swagger.json
 ```
 
 ### OpenAPI 3.0 Example
 ```
-https://min0625.github.io/openapi-viewer?uri=https://petstore3.swagger.io/api/v3/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://petstore3.swagger.io/api/v3/openapi.json
 ```
 
 ### Load from Private Gist
 ```
-https://min0625.github.io/openapi-viewer?uri=https://gist.githubusercontent.com/username/gist-id/raw/openapi.json
+https://min0625.github.io/openapi-viewer?url=https://gist.githubusercontent.com/username/gist-id/raw/openapi.json
 ```
 
 ## 🛠️ Technical Specifications
 
-- **Swagger UI**: v5.10.0
-- **Supported Formats**: 
+- **Swagger UI**: v5.30.2
+- **Supported Formats**:
   - Swagger 2.0 (JSON/YAML)
   - OpenAPI 3.0.x (JSON/YAML)
   - OpenAPI 3.1.x (JSON/YAML)
@@ -98,11 +98,26 @@ You can fork this project and modify `index.html` to:
 ## ⚠️ Important Notes
 
 ### CORS Limitations
-The loaded API documentation must allow cross-origin requests (CORS). If you encounter CORS errors:
 
-1. Ensure the target server has proper CORS headers configured
-2. Use GitHub Raw URLs or GitHub Gist
-3. Use CORS-enabled CDN services
+The loaded API documentation must allow cross-origin requests (CORS). If you encounter CORS errors, consider these solutions:
+
+#### 📝 Recommended Solutions
+
+1. **Use GitHub Raw URL**: Recommended approach, no CORS restrictions
+   ```
+   https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path-to-file>
+   ```
+
+2. **Use GitHub Gist**: Great for sharing example documentation
+   ```
+   https://gist.githubusercontent.com/<user>/<gist-id>/raw/<file>
+   ```
+
+3. **Configure Server CORS**: If you control the API server, add these headers:
+   ```
+   Access-Control-Allow-Origin: *
+   Access-Control-Allow-Methods: GET, OPTIONS
+   ```
 
 ### GitHub Raw URL Format
 When using GitHub files, use the following format:
