@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui.css">
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 9999;
+            max-width: 90%;
+        }
+
+        #info-banner {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info-banner">
+        🔍 支援 Swagger 2.0 & OpenAPI 3.x 規格 | 使用方式: ?uri=你的swagger.json網址
+    </div>
+    <div id="error-message"></div>
+    <div id="swagger-ui"></div>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.0/swagger-ui-standalone-preset.js"></script>
+    <script>
+        // 顯示錯誤訊息
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        window.onload = function() {
+            // 從 URL 參數取得 swagger.json 的位置
+            const urlParams = new URLSearchParams(window.location.search);
+            const swaggerUri = urlParams.get('uri');
+
+            // 如果沒有提供 uri 參數,使用預設的本地檔案
+            const swaggerUrl = swaggerUri || "./swagger.json";
+
+            try {
+                const ui = SwaggerUIBundle({
+                    url: swaggerUrl,
+                    dom_id: '#swagger-ui',
+                    deepLinking: true,
+                    presets: [
+                        SwaggerUIBundle.presets.apis,
+                        SwaggerUIStandalonePreset
+                    ],
+                    plugins: [
+                        SwaggerUIBundle.plugins.DownloadUrl
+                    ],
+                    layout: "StandaloneLayout",
+                    // 支援 Swagger 2.0 和 OpenAPI 3.x
+                    validatorUrl: null, // 停用線上驗證器以支援 private 文件
+                    onComplete: function() {
+                        // 檢測規格版本
+                        const spec = ui.getState().toJS().spec.json;
+                        let version = 'Unknown';
+
+                        if (spec.swagger) {
+                            version = `Swagger ${spec.swagger}`;
+                        } else if (spec.openapi) {
+                            version = `OpenAPI ${spec.openapi}`;
+                        }
+
+                        console.log(`✅ 成功載入 ${version} 規格`);
+                        document.getElementById('info-banner').innerHTML =
+                            `🔍 支援 Swagger 2.0 & OpenAPI 3.x 規格 | 當前版本: <strong>${version}</strong>`;
+                    },
+                    onFailure: function(error) {
+                        console.error('載入失敗:', error);
+                        showError('❌ 載入 API 文件失敗: ' + error.message);
+                    }
+                });
+
+                window.ui = ui;
+            } catch (error) {
+                console.error('初始化失敗:', error);
+                showError('❌ 初始化 Swagger UI 失敗: ' + error.message);
+            }
+        };
+    </script>
+</body>
+</html>
