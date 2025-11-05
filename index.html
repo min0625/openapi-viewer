@@ -120,6 +120,21 @@
                     onComplete: function() {
                         setLoading(false);
                         console.log('✅ Successfully initialized');
+                        // Minimal: clicking Explore redirects with ?url=...
+                        const root = document.querySelector('#swagger-ui');
+                        if (root) {
+                            root.addEventListener('click', (ev) => {
+                                const btn = ev.target && ev.target.closest ? ev.target.closest('.download-url-button') : null;
+                                if (!btn) return;
+                                const input = document.querySelector('#swagger-ui .download-url-input');
+                                const nextUrl = input && input.value ? String(input.value).trim() : '';
+                                if (nextUrl) {
+                                    const url = new URL(window.location.href);
+                                    url.searchParams.set('url', nextUrl);
+                                    window.location.href = url.toString();
+                                }
+                            }, true);
+                        }
                     },
                     onFailure: function(error) {
                         setLoading(false);
