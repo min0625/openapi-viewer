@@ -1,0 +1,184 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sample API (OpenAPI 3.1)",
+    "description": "Example Users API written in OpenAPI 3.1. Showcases 3.1-only features: full JSON Schema (type arrays for nullable instead of `nullable: true`), the `examples` keyword, an SPDX `license.identifier`, and a top-level `webhooks` section.",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "identifier": "MIT"
+    },
+    "contact": {
+      "name": "API Support",
+      "email": "support@example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "User management"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Get user list",
+        "description": "Returns a list of all users",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Successfully returned user list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new user",
+        "description": "Create a new user account",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "summary": "Get specific user",
+        "description": "Get detailed user information by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {
+    "userCreated": {
+      "post": {
+        "summary": "User created event",
+        "description": "Sent to your registered callback URL whenever a new user is created. `webhooks` is a top-level object introduced in OpenAPI 3.1.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 to acknowledge that the event was received."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [1]
+          },
+          "name": {
+            "type": "string",
+            "examples": ["John Doe"]
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["john@example.com"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2025-11-04T10:00:00Z"]
+          },
+          "deletedAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Soft-delete timestamp, or null for active accounts. The `[\"string\", \"null\"]` type array replaces 3.0's `nullable: true`."
+          }
+        }
+      },
+      "NewUser": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "examples": ["Jane Smith"]
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["jane@example.com"]
+          }
+        }
+      }
+    }
+  }
+}

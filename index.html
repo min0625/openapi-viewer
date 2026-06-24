@@ -3,12 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenAPI Viewer</title>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.30.2/swagger-ui.css">
+    <title>OpenAPI Viewer — View any OpenAPI &amp; Swagger spec in your browser</title>
+    <meta name="description" content="Render any OpenAPI 3.1 / 3.0 or Swagger 2.0 spec (JSON or YAML) in your browser with Swagger UI — free and zero setup. Share a spec by appending ?url= to the link.">
+    <meta name="keywords" content="OpenAPI viewer, Swagger viewer, Swagger UI, OpenAPI, OpenAPI 3.1, OpenAPI 3.0, Swagger 2.0, API documentation, REST API docs, OpenAPI JSON, OpenAPI YAML">
+    <meta name="author" content="min0625">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#1b1b1b">
+    <link rel="canonical" href="https://min0625.github.io/openapi-viewer/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="OpenAPI Viewer">
+    <meta property="og:title" content="OpenAPI Viewer — View any OpenAPI &amp; Swagger spec in your browser">
+    <meta property="og:description" content="Render any OpenAPI 3.1 / 3.0 or Swagger 2.0 spec (JSON or YAML) in your browser with Swagger UI — free and zero setup. Share a spec by appending ?url= to the link.">
+    <meta property="og:url" content="https://min0625.github.io/openapi-viewer/">
+    <meta property="og:locale" content="en">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://min0625.github.io/openapi-viewer/">
+    <meta name="twitter:title" content="OpenAPI Viewer">
+    <meta name="twitter:description" content="Render any OpenAPI 3.1 / 3.0 or Swagger 2.0 spec (JSON or YAML) in your browser with Swagger UI — free and zero setup.">
+
+    <!-- Structured data: helps search engines describe the tool in rich results -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "OpenAPI Viewer",
+        "url": "https://min0625.github.io/openapi-viewer/",
+        "description": "Render any OpenAPI 3.1 / 3.0 or Swagger 2.0 spec (JSON or YAML) in your browser with Swagger UI — free and zero setup. Share a spec by appending ?url= to the link.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any (modern web browser)",
+        "browserRequirements": "Requires JavaScript",
+        "isAccessibleForFree": true,
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "min0625",
+            "url": "https://github.com/min0625"
+        }
+    }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ctext y=%2214%22 font-size=%2214%22%3E📘%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" type="text/css"
+          href="https://unpkg.com/swagger-ui-dist@5.30.2/swagger-ui.css"
+          integrity="sha384-++DMKo1369T5pxDNqojF1F91bYxYiT1N7b1M15a7oCzEodfljztKlApQoH6eQSKI"
+          crossorigin="anonymous">
     <style>
         html {
             box-sizing: border-box;
-            overflow: -moz-scrollbars-vertical;
             overflow-y: scroll;
         }
 
@@ -21,6 +69,30 @@
         body {
             margin: 0;
             padding: 0;
+        }
+
+        /* Visually hidden but available to crawlers and screen readers, so the
+           page exposes meaningful text even before Swagger UI renders (its
+           content is injected by JavaScript and is invisible to non-JS bots). */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        #noscript-message {
+            max-width: 640px;
+            margin: 60px auto;
+            padding: 0 24px;
+            text-align: center;
+            font-family: sans-serif;
+            color: #333;
         }
 
         #error-message {
@@ -63,6 +135,31 @@
     </style>
 </head>
 <body>
+    <header class="sr-only">
+        <h1>OpenAPI Viewer — render any OpenAPI or Swagger spec in your browser</h1>
+        <p>
+            OpenAPI Viewer is a free, zero-setup web app that renders OpenAPI 3.1,
+            OpenAPI 3.0, and Swagger 2.0 specifications (in JSON or YAML) using
+            Swagger UI. Load any spec by appending the <code>?url=</code> query
+            parameter to the address, then share the resulting link.
+        </p>
+    </header>
+
+    <noscript>
+        <div id="noscript-message">
+            <h2>JavaScript is required</h2>
+            <p>
+                OpenAPI Viewer renders API specifications with Swagger UI, which
+                needs JavaScript to run. Please enable JavaScript in your browser
+                to view OpenAPI 3.1, OpenAPI 3.0, and Swagger 2.0 documentation.
+            </p>
+            <p>
+                Learn more on the
+                <a href="https://github.com/min0625/openapi-viewer">project page</a>.
+            </p>
+        </div>
+    </noscript>
+
     <div id="error-message"></div>
     <div id="placeholder"></div>
     <div id="loading" style="display:none; text-align:center; padding: 24px; font-family: sans-serif; color:#666">
@@ -71,15 +168,22 @@
     </div>
     <div id="swagger-ui"></div>
 
-    <script src="https://unpkg.com/swagger-ui-dist@5.30.2/swagger-ui-bundle.js"></script>
-    <script src="https://unpkg.com/swagger-ui-dist@5.30.2/swagger-ui-standalone-preset.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.30.2/swagger-ui-bundle.js"
+            integrity="sha384-bBdB196maIUakX6v2F6J0XcjddQfaENm8kASsYfqTKCZua9xlYNh1AdtL18PGr0D"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.30.2/swagger-ui-standalone-preset.js"
+            integrity="sha384-Se2dMItBjKehkhvdy8ZDK8Qbj8wWIgvme6DMtaefAPiGI75QN4jG8LS/eFfkUxi2"
+            crossorigin="anonymous"></script>
     <script>
+        let errorTimer = null;
         function showError(message) {
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
-            setTimeout(() => {
+            if (errorTimer) clearTimeout(errorTimer);
+            errorTimer = setTimeout(() => {
                 errorDiv.style.display = 'none';
+                errorTimer = null;
             }, 5000);
         }
 
@@ -90,14 +194,58 @@
             if (status && msg) status.textContent = msg;
         }
 
+        // Render the fatal-error screen. Uses textContent / createElement so that
+        // attacker-controlled values (e.g. the ?url= param) can never inject HTML.
+        function renderPlaceholder(message, url) {
+            const placeholder = document.getElementById('placeholder');
+            placeholder.textContent = '';
+
+            const h2 = document.createElement('h2');
+            h2.textContent = '❌ Failed to load API documentation';
+            placeholder.appendChild(h2);
+
+            const errorP = document.createElement('p');
+            const errorLabel = document.createElement('strong');
+            errorLabel.textContent = 'Error: ';
+            errorP.appendChild(errorLabel);
+            errorP.appendChild(document.createTextNode(message));
+            placeholder.appendChild(errorP);
+
+            const urlP = document.createElement('p');
+            const urlLabel = document.createElement('strong');
+            urlLabel.textContent = 'URL: ';
+            urlP.appendChild(urlLabel);
+            const code = document.createElement('code');
+            code.textContent = url;
+            urlP.appendChild(code);
+            placeholder.appendChild(urlP);
+
+            placeholder.style.display = 'flex';
+        }
+
         window.onload = function() {
-            const DEFAULT_SPEC_URL = 'https://raw.githubusercontent.com/min0625/openapi-viewer/main/swagger.json';
+            // Served from the same origin (GitHub Pages / local http server) — avoids
+            // the extra CORS/rate-limit hop through raw.githubusercontent.com.
+            const DEFAULT_SPEC_URL = 'swagger.json';
             const urlParams = new URLSearchParams(window.location.search);
             let swaggerUrl = urlParams.get('url');
 
             if (!swaggerUrl) {
                 swaggerUrl = DEFAULT_SPEC_URL;
                 console.log('ℹ️ No url parameter provided. Using default spec:', swaggerUrl);
+            } else {
+                // Only allow http(s) specs. Blocks javascript:/data:/etc. being passed
+                // via ?url= and loaded into the page. Relative paths resolve against
+                // the current origin and are allowed.
+                let parsed = null;
+                try { parsed = new URL(swaggerUrl, window.location.href); } catch (e) { /* invalid */ }
+                if (!parsed || (parsed.protocol !== 'http:' && parsed.protocol !== 'https:')) {
+                    const msg = 'Unsupported or invalid spec URL (only http/https are allowed).';
+                    console.error('❌ Rejected url parameter:', swaggerUrl);
+                    showError(msg);
+                    renderPlaceholder(msg, swaggerUrl);
+                    return;
+                }
             }
 
             console.log('🔍 Loading from:', swaggerUrl);
@@ -121,13 +269,28 @@
                         setLoading(false);
                         console.log('✅ Successfully initialized');
                         // Minimal: clicking Explore redirects with ?url=...
+                        // Guard against re-registering on repeated onComplete calls.
                         const root = document.querySelector('#swagger-ui');
-                        if (root) {
+                        if (root && !root.dataset.exploreBound) {
+                            root.dataset.exploreBound = 'true';
                             root.addEventListener('click', (ev) => {
                                 const btn = ev.target && ev.target.closest ? ev.target.closest('.download-url-button') : null;
                                 if (!btn) return;
+                                ev.stopImmediatePropagation();
                                 const input = document.querySelector('#swagger-ui .download-url-input');
                                 const nextUrl = input && input.value ? String(input.value).trim() : '';
+                                if (nextUrl) {
+                                    const url = new URL(window.location.href);
+                                    url.searchParams.set('url', nextUrl);
+                                    window.location.href = url.toString();
+                                }
+                            }, true);
+                            root.addEventListener('keyup', (ev) => {
+                                if (ev.key !== 'Enter') return;
+                                const input = ev.target && ev.target.closest ? ev.target.closest('.download-url-input') : null;
+                                if (!input) return;
+                                ev.stopImmediatePropagation();
+                                const nextUrl = String(input.value).trim();
                                 if (nextUrl) {
                                     const url = new URL(window.location.href);
                                     url.searchParams.set('url', nextUrl);
@@ -139,7 +302,9 @@
                     onFailure: function(error) {
                         setLoading(false);
                         console.error('❌ onFailure:', error);
-                        showError('Failed to load API documentation: ' + (error.message || error));
+                        const message = (error && error.message) || String(error);
+                        showError('Failed to load API documentation: ' + message);
+                        renderPlaceholder(message, swaggerUrl);
                     }
                 });
 
@@ -147,15 +312,9 @@
             } catch (error) {
                 setLoading(false);
                 console.error('❌ Initialization error:', error);
-                showError('Failed to initialize: ' + error.message);
-
-                const placeholder = document.getElementById('placeholder');
-                placeholder.style.display = 'flex';
-                placeholder.innerHTML = `
-                    <h2>❌ Failed to load API documentation</h2>
-                    <p><strong>Error:</strong> ${error.message}</p>
-                    <p><strong>URL:</strong> <code>${swaggerUrl}</code></p>
-                `;
+                const message = (error && error.message) || String(error);
+                showError('Failed to initialize: ' + message);
+                renderPlaceholder(message, swaggerUrl);
             }
         };
     </script>

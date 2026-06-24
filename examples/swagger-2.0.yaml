@@ -1,0 +1,96 @@
+swagger: '2.0'
+info:
+  title: Sample API (Swagger 2.0, YAML)
+  description: >-
+    The same Users API as swagger-2.0.json, written in YAML. Note the 2.0-only
+    shape: host/basePath/schemes, top-level consumes/produces, body parameters,
+    and definitions.
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+host: api.example.com
+basePath: /v1
+schemes: [https]
+consumes: [application/json]
+produces: [application/json]
+tags:
+  - name: Users
+    description: User management
+paths:
+  /users:
+    get:
+      summary: Get user list
+      description: Returns a list of all users
+      tags: [Users]
+      responses:
+        '200':
+          description: Successfully returned user list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      summary: Create new user
+      description: Create a new user account
+      tags: [Users]
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/NewUser'
+      responses:
+        '201':
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid request parameters
+  /users/{userId}:
+    get:
+      summary: Get specific user
+      description: Get detailed user information by ID
+      tags: [Users]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User ID
+          type: integer
+      responses:
+        '200':
+          description: Successfully returned user information
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: User not found
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: John Doe
+      email:
+        type: string
+        format: email
+        example: john@example.com
+      createdAt:
+        type: string
+        format: date-time
+        example: '2025-11-04T10:00:00Z'
+  NewUser:
+    type: object
+    required: [name, email]
+    properties:
+      name:
+        type: string
+        example: Jane Smith
+      email:
+        type: string
+        format: email
+        example: jane@example.com
