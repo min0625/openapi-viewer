@@ -1,156 +1,44 @@
 # 🔍 OpenAPI Viewer
 
-A simple and elegant OpenAPI/Swagger documentation viewer hosted on GitHub Pages. Supports dynamic loading of any public API specification files.
+Render any OpenAPI/Swagger spec in your browser — no installation, no backend.
 
-[![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://min0625.github.io/openapi-viewer/)
+[![Demo](https://img.shields.io/badge/demo-GitHub%20Pages-blue)](https://min0625.github.io/openapi-viewer/)
 [![Swagger UI](https://img.shields.io/badge/Swagger%20UI-5.30.2-green)](https://github.com/swagger-api/swagger-ui)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 [繁體中文](./README.zh-TW.md) | English
 
-## ✨ Features
+## Usage
 
-- 🎯 **Multi-Version Support**: Compatible with both Swagger 2.0 and OpenAPI 3.x specifications
-- 🔗 **Dynamic Loading**: Load any public API documentation via URL parameters
-- 🎨 **Real-time Rendering**: Render documentation using official Swagger UI
-- 🚀 **Zero Deployment**: Powered by GitHub Pages with zero configuration
-- 📱 **Responsive Design**: Works seamlessly across all device screen sizes
-- ⚡ **Auto Detection**: Automatically identifies and displays API specification versions
-- 🛡️ **Error Handling**: User-friendly error messages and feedback
-
-## 🚀 Quick Start
-
-### Method 1: Load External API Documentation
-
-Add the `?url=` parameter to the URL, pointing to your OpenAPI/Swagger JSON file:
+Pass any public OpenAPI/Swagger JSON or YAML URL via `?url=`:
 
 ```
-https://min0625.github.io/openapi-viewer?url=https://petstore3.swagger.io/api/v3/openapi.json
+https://min0625.github.io/openapi-viewer/?url=https://petstore3.swagger.io/api/v3/openapi.json
 ```
 
-### Method 2: Load Files from GitHub
+Visiting without `?url=` loads the bundled default spec. The Explore box updates `?url=` on navigation, so every spec has a shareable, bookmarkable URL.
 
-Use GitHub Raw URL:
+Supports Swagger 2.0, OpenAPI 3.0.x, and OpenAPI 3.1.x — JSON or YAML. Only `http(s)` and same-origin URLs are accepted.
+
+## Examples
+
+Bundled specs under [`examples/`](examples/) — the same Users API across all supported versions:
+
+| Version | JSON | YAML |
+| --- | --- | --- |
+| Swagger 2.0 | [`swagger-2.0.json`](examples/swagger-2.0.json) · [open](https://min0625.github.io/openapi-viewer/?url=examples/swagger-2.0.json) | [`swagger-2.0.yaml`](examples/swagger-2.0.yaml) · [open](https://min0625.github.io/openapi-viewer/?url=examples/swagger-2.0.yaml) |
+| OpenAPI 3.0 | [`openapi-3.0.json`](examples/openapi-3.0.json) · [open](https://min0625.github.io/openapi-viewer/?url=examples/openapi-3.0.json) | [`openapi-3.0.yaml`](examples/openapi-3.0.yaml) · [open](https://min0625.github.io/openapi-viewer/?url=examples/openapi-3.0.yaml) |
+| OpenAPI 3.1 | [`openapi-3.1.json`](examples/openapi-3.1.json) · [open](https://min0625.github.io/openapi-viewer/?url=examples/openapi-3.1.json) | [`openapi-3.1.yaml`](examples/openapi-3.1.yaml) · [open](https://min0625.github.io/openapi-viewer/?url=examples/openapi-3.1.yaml) |
+
+## CORS
+
+The spec URL must allow cross-origin requests. GitHub Raw and Gist URLs work without CORS restrictions:
 
 ```
-https://min0625.github.io/openapi-viewer?url=https://raw.githubusercontent.com/min0625/openapi-viewer/main/swagger.json
+https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path>
+https://gist.githubusercontent.com/<user>/<gist-id>/raw/<file>
 ```
 
-### Method 3: No URL Parameter
+## License
 
-If you visit without the `url` parameter, the default example API documentation will be loaded.
-
-## 📚 Usage Examples
-
-### Swagger 2.0 Example
-```
-https://min0625.github.io/openapi-viewer?url=https://petstore.swagger.io/v2/swagger.json
-```
-
-### OpenAPI 3.0 Example
-```
-https://min0625.github.io/openapi-viewer?url=https://petstore3.swagger.io/api/v3/openapi.json
-```
-
-### Load from Private Gist
-```
-https://min0625.github.io/openapi-viewer?url=https://gist.githubusercontent.com/username/gist-id/raw/openapi.json
-```
-
-## 🛠️ Technical Specifications
-
-- **Swagger UI**: v5.30.2
-- **Supported Formats**:
-  - Swagger 2.0 (JSON/YAML)
-  - OpenAPI 3.0.x (JSON/YAML)
-  - OpenAPI 3.1.x (JSON/YAML)
-- **Browser Support**: All modern browsers (Chrome, Firefox, Safari, Edge)
-
-## 📦 Local Development
-
-### 1. Clone the Project
-```bash
-git clone https://github.com/min0625/openapi-viewer.git
-cd openapi-viewer
-```
-
-### 2. Start Local Server
-```bash
-# Using Python
-python -m http.server 8000
-
-# Or using Node.js
-npx serve .
-```
-
-### 3. View Documentation
-Open your browser and visit `http://localhost:8000`
-
-## 🔧 Customization
-
-You can fork this project and modify `index.html` to:
-
-- Adjust UI theme colors
-- Add custom CSS styles
-- Change default loading behavior
-- Add additional Swagger UI configurations
-
-## ⚠️ Important Notes
-
-### CORS Limitations
-
-The loaded API documentation must allow cross-origin requests (CORS). If you encounter CORS errors, consider these solutions:
-
-#### 📝 Recommended Solutions
-
-1. **Use GitHub Raw URL**: Recommended approach, no CORS restrictions
-   ```
-   https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path-to-file>
-   ```
-
-2. **Use GitHub Gist**: Great for sharing example documentation
-   ```
-   https://gist.githubusercontent.com/<user>/<gist-id>/raw/<file>
-   ```
-
-3. **Configure Server CORS**: If you control the API server, add these headers:
-   ```
-   Access-Control-Allow-Origin: *
-   Access-Control-Allow-Methods: GET, OPTIONS
-   ```
-
-### GitHub Raw URL Format
-When using GitHub files, use the following format:
-```
-https://raw.githubusercontent.com/<user>/<repo>/<branch>/<path-to-file>
-```
-
-## 🤝 Contributing
-
-Issues and Pull Requests are welcome!
-
-1. Fork this project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## 🙏 Acknowledgments
-
-- [Swagger UI](https://github.com/swagger-api/swagger-ui) - Providing excellent API documentation viewing tools
-- [OpenAPI Initiative](https://www.openapis.org/) - Maintaining the OpenAPI specification standards
-
-## 📮 Contact
-
-If you have any questions or suggestions:
-
-- Open an Issue: [GitHub Issues](https://github.com/min0625/openapi-viewer/issues)
-- Contact Author: [@min0625](https://github.com/min0625)
-
----
-
-<p align="center">Made with ❤️ by <a href="https://github.com/min0625">Min Huang</a></p>
+MIT — see [LICENSE](LICENSE)
